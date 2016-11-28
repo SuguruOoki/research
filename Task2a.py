@@ -45,12 +45,12 @@ class LSTM(chainer.Chain):
     def reset_state(self):
         self.l1.reset_state()
 
-    def read_data(id=117):
-         ''' 関数のDocstring '''
+    def read_data_train(self, id):
+        ''' 関数のDocstring '''
         trdatafile = id + '_data.txt'
         trlabelfile = id + '_label.txt'
         # 訓練データの読み込み
-        os.chdir('/Users/suguruoki/Documents/研究/word_data')
+        os.chdir('/Users/suguruoki/Documents/research/word_data')
         tmp = np.genfromtxt(trdatafile, delimiter='\t')
         trdata = tmp[:,:tmp.shape[1]-1]
         trlabel = np.genfromtxt(trlabelfile, delimiter='\t')
@@ -63,11 +63,16 @@ class LSTM(chainer.Chain):
         print(trdata.shape)
         print("trlabel.shape")
         print(trlabel.shape)
-    
+        return trdata
+
+
+    def read_data_test(self, id):
+        ''' 関数のDocstring '''
+        tmp = 0
         tedatafile = 'ans-' + id + '_data.txt'
         telabelfile = 'ans-' + id + '_label.txt'
         # テストデータの読み込み
-        os.chdir('/Users/suguruoki/Documents/研究/answer_data')
+        os.chdir('/Users/suguruoki/Documents/research/answer_data')
         tmp = np.genfromtxt(tedatafile, delimiter='\t')
         tedata = tmp[:,:tmp.shape[1]-1]
         telabel = np.genfromtxt(telabelfile, delimiter='\t')
@@ -79,7 +84,6 @@ class LSTM(chainer.Chain):
         print(tedata.shape)
         print("telabel.shape")
         print(telabel.shape)
-
 
         #def main():
         #    ''' main関数 '''
@@ -93,12 +97,12 @@ class LSTM(chainer.Chain):
 
 # 引数の処理
 parser = argparse.ArgumentParser()
-parser.add_argument('--gpu', '-g', default=-1, type=int,
+parser.add_argument('--gpu', '-g', default=-1, type=float,
                     help='GPU ID (negative value indicates CPU)')
 args = parser.parse_args()
 
 # パラメータ設定
-p = 5          # 文字列長
+p = 50          # 次元
 n_units = 4    # 隠れ層のユニット数
 
 
@@ -107,16 +111,20 @@ n_units = 4    # 隠れ層のユニット数
 # 訓練データの準備
 # train_data[0]がy、train_data[1]がxの方
 # a_1を0にしたので添字がひとつずれている
-train_data = tedata#np.ndarray((2, p+1), dtype=np.int32)
-train_data[0][0] = train_data[0][p] = p
-train_data[1][0] = train_data[1][p] = p-1
+train_data = LSTM(p , n_units).read_data_train('117')
+np.ndarray((2, p+1), dtype=np.float32)
+print("train_data")
+print(train_data)
+
+train_data[0][0] = train_data[0][p]
+train_data[1][0] = train_data[1][p]
 for i in range(p-1):
     train_data[0][i+1] = i
     train_data[1][i+1] = i
 
 # 訓練データの表示
-print(train_data[0])
-print(train_data[1])
+#print(train_data)
+#print(train_data[1])
 
 
 # モデルの準備

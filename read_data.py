@@ -9,7 +9,7 @@ def read_data(id):
     trdatafile = id + '_data.txt'
     trlabelfile = id + '_label.txt'
     # 訓練データの読み込み
-    os.chdir('/Users/suguruoki/Documents/研究/共起単語データ')
+    os.chdir('/Users/suguruoki/Documents/research/word_data')
     tmp = np.genfromtxt(trdatafile, delimiter='\t')
     trdata = tmp[:,:tmp.shape[1]-1]
     trlabel = np.genfromtxt(trlabelfile, delimiter='\t')
@@ -26,7 +26,7 @@ def read_data(id):
     tedatafile = 'ans-' + id + '_data.txt'
     telabelfile = 'ans-' + id + '_label.txt'
     # テストデータの読み込み
-    os.chdir('/Users/suguruoki/Documents/研究/answer_data')
+    os.chdir('/Users/suguruoki/Documents/research/answer_data')
     tmp = np.genfromtxt(tedatafile, delimiter='\t')
     tedata = tmp[:,:tmp.shape[1]-1]
     telabel = np.genfromtxt(telabelfile, delimiter='\t')
